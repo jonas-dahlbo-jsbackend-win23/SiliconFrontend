@@ -1,0 +1,70 @@
+header {
+    padding: 15px;
+
+    .container {
+        display: grid;
+        align-items: center;
+        grid-template-columns: 1fr auto;
+        grid-template-areas: "logo switch mobile";
+        gap: 40px;
+
+        @include lg {
+            grid-template-columns: auto 1fr auto auto;
+            grid-template-areas: "logo navbar switch buttons";
+        }
+
+        .hide {
+            display:none;
+            
+            @include lg {
+                display:block;
+            }
+        }
+
+        .logo {
+            grid-area: logo;
+        }
+
+        #menu {
+            grid-area: navbar;
+            display: none;
+
+            @include lg {
+                display: block;
+            }
+
+            nav {
+                display: flex;
+                gap: 15px;
+
+                .menu-link {
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+
+        .btn-switch {
+            grid-area: switch;
+
+            label {
+                @include text-s;
+
+                @include lg {
+                    @include text-m;
+                }
+            }
+        }
+
+        #account-buttons {
+            grid-area: buttons;
+            display: none;
+            gap: 15px;
+
+            @include lg {
+                display: flex;
+            }
+        }
+    }
+}

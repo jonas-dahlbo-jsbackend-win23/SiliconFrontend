@@ -1,0 +1,188 @@
+@mixin button {
+    border-radius: 6px;
+    text-align: center;
+    font-size: 14px;
+    padding: 8px 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px
+}
+
+.theme-btn {
+    @include button;
+    background: $theme;
+    color: $white;
+    border: none;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+        background: $gray-700;
+        color: $white;
+    }
+}
+
+
+
+.theme-s-btn {
+    @include button;
+    @include theme-shadow;
+    background: $theme;
+    color: $white;
+    padding-top: 10px;
+    padding-bottom: 13px;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+        @include theme-secondary-shadow;
+        background: $gray-700;
+        color: $white;
+    }
+}
+
+.gray-btn {
+    @include button;
+    background: $gray-200;
+    color: $gray-800;
+    border: none;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+        background: $gray-700;
+        color: $white;
+    }
+}
+
+.btn-switch {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    label {
+        @include text-nav;
+    }
+
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 46px;
+        height: 25px;
+
+        & input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+
+            &:checked + .slider {
+                background-color: $theme;
+            }
+
+            &:focus + .slider {
+                box-shadow: 0 0 1px $theme;
+            }
+
+             &:checked + .slider:before {
+                transform: translateX(20px);
+                background-color: $white;
+             }
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: $gray-700;
+            transition: 0.35s;
+
+            &:before {
+                position: absolute;
+                content: "";
+                height: 20px;
+                width: 20px;
+                left: 3px;
+                bottom: 3px;
+                background-color: $white;
+                transition: 0.35s;
+            }
+
+            &.round {
+                border-radius: 34px;
+            }
+
+            &.round:before {
+                border-radius: 50%;
+            }
+
+        }
+    }
+}
+
+
+.btn-subscribe {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 46px;
+        height: 25px;
+
+        & input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+
+            &:checked + .slider {
+                background-color: green;
+            }
+
+            &:focus + .slider {
+                box-shadow: 0 0 1px green;
+            }
+
+            &:checked + .slider:before {
+                transform: translateX(20px);
+                background-color: white;
+            }
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: grey;
+            transition: 0.35s;
+
+            &:before {
+                position: absolute;
+                content: "";
+                height: 20px;
+                width: 20px;
+                left: 3px;
+                bottom: 3px;
+                background-color: white;
+                transition: 0.35s;
+            }
+
+            &.round {
+                border-radius: 34px;
+            }
+
+            &.round:before {
+                border-radius: 50%;
+            }
+        }
+    }
+}

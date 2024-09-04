@@ -1,0 +1,65 @@
+.download-app {
+    background-color: $gray-100;
+    padding-top: 60px;
+    padding-bottom: 40px;
+    .container {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+
+        img {
+            display: none;
+            @include lg {
+                display: block;
+                padding-left: 80px;
+            }
+        }
+        
+        .section-box {
+            img {
+                display: block;
+            }
+
+            @include lg {
+                width: 40%;
+                padding-right: 100px;
+
+                img {
+                    padding-left: 0;
+                    margin-top: 5px;
+                    margin-bottom: 10px;
+                 }
+            }
+
+            h1 {
+                text-align: center;
+                @include h2;
+                
+                @include lg {
+                    text-align: start;
+                    @include h1;
+                }
+            }
+
+            .review-box {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                align-items: end;
+                padding-top: 20px;
+
+                .review-text {
+                    margin-right: 20px;
+
+                    .store {
+                        color: $gray-600;
+                        margin-bottom: 0px;
+                    }
+
+                    .reviews {
+                        color: $gray-700;
+                    }
+                }
+            }
+        }
+    }
+}

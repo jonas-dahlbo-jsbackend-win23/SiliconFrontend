@@ -1,0 +1,170 @@
+﻿@page "/courses"
+@using System.Text.Json.Serialization
+@using System.Text.Json
+@using System.Text.Json.Nodes
+@using Microsoft.AspNetCore.Authorization
+@using Newtonsoft.Json
+
+
+
+@attribute [StreamRendering]
+@attribute [Authorize]
+
+<PageTitle>Courses</PageTitle>
+
+<section class="courses">
+    <div class="container">
+        <div class="courses-title-box">
+            <div class="title">
+                <div class="courses-nav"> <img src="/images/icons/bx-home.svg"> <p>  Home  <i class="fa-solid fa-chevrons-right"></i><a href="#">  Courses</a></p></div>
+                <div class="courses-title"><h1>Courses</h1></div>
+                <div class="search-box">
+                    <select name="category">
+                        <option value="all-categories">All categories</option>
+                        <option value="frontend">Frontend</option>
+                        <option value="fullstack">Fullstack</option>
+                        <option value="data-science">Data science</option>
+                    </select>
+                    <input type="search" name="search-courses" placeholder="Search courses">
+                </div>
+            </div>
+        </div>
+        <div class="courses-content-box">
+
+            @if (courses != null)
+            {
+                foreach (var course in courses)
+                {
+                    <div class="course-content">
+                        <div class="image">
+                            <img src="images/@course.Image">
+                            <div class="bookmark">
+                                <div>
+                                    @if (@course.IsBestseller)
+                                    {
+                                        <p>Best Seller</p>
+                                    }
+                                </div>
+                                <img src="/images/icons/bookmark.svg" alt="">
+                            </div>
+                        </div>
+                        <div class="course-info">
+                            <div class="course-title">
+                                <h5>@course.Title</h5>
+                                <p>@course.Authors[0]</p>
+                                <div class="price-box">
+                                    <p class="discount-price">@course.Prices.Discount</p>
+                                    @if (course.Prices.Discount != null)
+                                    {
+                                        <p class="line-through-price">@course.Prices.Price</p>
+                                    }
+                                    else
+                                    {
+                                        <p class="price">@course.Prices.Price</p>
+                                    }
+                                </div>
+                            </div>
+                            <div class="course-likes">
+                                <div class="likes"><img src="/images/icons/bx-time-five.svg" alt="">@course.Hours</div>
+                                <div class="likes"><img src="/images/icons/bx-like.svg" alt="">@course.LikesPercent (@course.Likes)</div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <p><em>Loading... Courses not found yet. </em></p>
+            }
+        </div>
+    </div>
+</section>
+
+<section class="work-with-us">
+    <img src="/images/Courses/pagination.svg" alt="" class="center">
+    <div class="container">
+        <div class="get-started">
+            <div class="section-text">
+                <p>Ready to get started?</p>
+                <h1>Take Your <span>Skills</span> to the Next Level</h1>
+                <a class="theme-btn">Work with us</a>
+            </div>
+            <img src="/images/Courses/girl-at-desk.svg" alt="">
+        </div>
+    </div>
+</section>
+
+@code {
+    public CourseModel[]? courses;
+    private HttpClient client = new HttpClient();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var query = new GraphQLQuery
+        {
+            Query = "{getAllCourses{id image title authors{name} prices{price discount} hours likes likesPercent isBestseller}}"
+        };
+
+        var response = await client.PostAsJsonAsync("http://localhost:7279/api/graphql", query);
+
+        if (response.IsSuccessStatusCode)
+        {
+
+            var jsonResponse = await response.Content.ReadFromJsonAsync<JsonElement>();
+            var courseData = JsonConvert.DeserializeObject<List<CourseModel>>(jsonResponse.GetProperty("data").GetProperty("getAllCourses").ToString());
+            var i = 0;
+            List<CourseModel> courseList = new List<CourseModel>();
+            foreach (var course in courseData)
+            {
+                courseList.Add(new CourseModel
+                    {
+                        Id = course.Id,
+                        Image = course.Image,
+                        Title = course.Title,
+                        Authors = course.Authors,
+                        Prices = course.Prices,
+                        Hours = course.Hours,
+                        Likes = course.Likes,
+                        LikesPercent = course.LikesPercent,
+                        IsBestseller = course.IsBestseller
+                    });
+
+                i++;
+            }
+            courses = courseList.ToArray();
+        }
+
+        
+    }
+
+    public class GraphQLQuery
+    {
+        public string Query { get; set; } = null!;
+    }
+
+
+    public class CourseModel
+    {
+        public string Id { get; set; }
+        public string Image { get; set; }
+        public string Title { get; set; }
+        public Author[] Authors { get; set; }
+        public Prices Prices { get; set; }
+        public string Hours { get; set; }
+        public string Likes { get; set; }
+        public string LikesPercent { get; set; }
+        public bool IsBestseller { get; set; }
+    }
+
+    public class Prices
+    {
+        public string Price { get; set; }
+        public string Discount { get; set; }
+    }
+
+    public class Author
+    {
+        public string Name { get; set; }
+    }
+}
+

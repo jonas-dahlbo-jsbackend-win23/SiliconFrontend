@@ -1,0 +1,233 @@
+﻿@page "/Account"
+@using Microsoft.AspNetCore.Html
+<PageTitle>Profile</PageTitle>
+
+
+@if (user == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+
+    <div class="account-management">
+        <div class="profile">
+            <div class="profile-image">
+                <img src="/images/profile-mid.svg" alt="Profile picture">
+                <h5>@user.FirstName @user.LastName</h5>
+                <p>@user.Email</p>
+            </div>
+        </div>
+        <div class="profile-btns">
+            <div class="account-btn"><NavLink class="theme-btn" href="/account"><img src="images/icons/bx-cog.svg" alt="">Account Details</NavLink></div>
+            <div class="account-btn"><NavLink class="theme-btn" href="/account/logout"><img src="/images/icons/bx-log-out.svg" /> Sign Out</NavLink></div>
+        </div>
+    </div>
+
+
+    <div class="content">
+        <div class="account-details">
+            <h2>Account Details</h2>
+            <div class="info-form">
+                <EditForm Model="Input" FormName="profile" OnValidSubmit="OnValidProfileSubmitAsync" method="post">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary class="text-danger" role="alert" />
+                    <h5>Basic Info</h5>
+                    <div class="basic-info">
+                        <div class="input-group" id="account-firstname">
+                            <label class="form-label">First name</label>
+                            <InputText @bind-Value="Input.FirstName" placeholder="Please enter your Frist name." />
+                            <ValidationMessage For="() => Input.FirstName" class="text-danger" />
+                        </div>
+                        <div class="input-group" id="account-lastname">
+                            <label class="form-label">Surname</label>
+                            <InputText @bind-Value="Input.LastName" placeholder="Please enter your Last name." />
+                            <ValidationMessage For="() => Input.LastName" class="text-danger" />
+                        </div>
+                        <div class="input-group" id="account-email">
+                            <label class="form-label">Email</label>
+                            <InputText @bind-Value="Input.Email" placeholder="Please enter your Email." />
+                            <ValidationMessage For="() => Input.Email" class="text-danger" />
+                        </div>
+                        <div class="input-group" id="account-phone">
+                            <label class="form-label">Phone number</label>
+                            <InputText @bind-Value="Input.PhoneNumber" placeholder="Please enter your phone number." />
+                            <ValidationMessage For="() => Input.PhoneNumber" class="text-danger" />
+                        </div>
+                        <div class="input-group" id="account-bio">
+                            <label class="form-label">Biography</label>
+                            <InputText @bind-Value="Input.Bio" placeholder="Please enter your Biography." />
+                            <ValidationMessage For="() => Input.Bio" class="text-danger" />
+                        </div>
+                        <div class="save-changes">
+                            <button class="gray-btn" type="reset">Cancel</button>
+                            <button class="theme-btn" type="submit">Save changes</button>
+                        </div>
+                    </div>
+                </EditForm>
+                <EditForm Model="Input" FormName="address" OnValidSubmit="OnValidAddressSubmitAsync" method="post">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary class="text-danger" role="alert" />
+                    <h5>Address</h5>
+                    <div class="address">
+                        <div class="input-group" id="account-primary-address">
+                            <label for="username" class="form-label">Primary address</label>
+                            <InputText @bind-Value="Input.PrimaryAdress" placeholder="Please enter your primary address." />
+                            <ValidationMessage For="() => Input.PrimaryAdress" class="text-danger" />
+                        </div>
+                        <div class="input-group" id="account-secondary-address">
+                            <label for="phone-number" class="form-label">Secondary address</label>
+                            <InputText @bind-Value="Input.SecondaryAddress" placeholder="Please enter your secondary address." />
+                            <ValidationMessage For="() => Input.SecondaryAddress" class="text-danger" />
+                        </div>
+                        <div class="input-group" id="account-postal-code">
+                            <label for="username" class="form-label">Postal Code</label>
+                            <InputText @bind-Value="Input.Postal" placeholder="Please enter your postal code." />
+                            <ValidationMessage For="() => Input.Postal" class="text-danger" />
+                        </div>
+                        <div class="input-group" id="account-city">
+                            <label for="phone-number" class="form-label">City</label>
+                            <InputText @bind-Value="Input.City" placeholder="Please enter your city." />
+                            <ValidationMessage For="() => Input.City" class="text-danger" />
+                        </div>
+                        <div class="save-changes">
+                            <button class="gray-btn" type="reset">Cancel</button>
+                            <button class="theme-btn" type="submit">Save changes</button>
+                        </div>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+
+
+}
+
+
+
+@code {
+    private ApplicationUser user = default!;
+    private AddressEntity address = default!;
+    private string? firstName;
+    private string? lastName;
+    private string? email;
+    private string? phoneNumber;
+    private string? bio;
+    private string? primaryAddress;
+    private string? secondaryAddress;
+    private string? postalCode;
+    private string? city;
+
+    [CascadingParameter]
+    private HttpContext HttpContext { get; set; } = default!;
+
+    [SupplyParameterFromForm]
+    private InputModel Input { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        user = await userManager.GetUserAsync(HttpContext.User) ?? null!;
+        firstName = user.FirstName;
+        lastName = user.LastName;
+        email = user.Email;
+        phoneNumber = user.PhoneNumber;
+        bio = user.Bio;
+        if (user.Address != null)
+        {
+            primaryAddress = user.Address.PrimaryAddress;
+            secondaryAddress = user.Address.SecondaryAddress;
+            postalCode = user.Address.PostalCode;
+            city = user.Address.City;
+        }
+
+
+        if (!string.IsNullOrEmpty(firstName) && Input != null)
+        {
+            Input.FirstName ??= firstName;
+            Input.LastName ??= lastName;
+            Input.Email ??= email;
+            Input.PhoneNumber ??= phoneNumber;
+            Input.Bio ??= bio;
+            Input.PrimaryAdress ??= primaryAddress;
+            Input.SecondaryAddress ??= secondaryAddress;
+            Input.Postal ??= postalCode;
+            Input.City ??= city;
+        }
+
+    }
+
+    private async Task OnValidProfileSubmitAsync()
+    {
+
+        user.FirstName = Input.FirstName;
+        user.LastName = Input.LastName;
+        user.Email = Input.Email;
+        user.UserName = Input.Email;
+        user.PhoneNumber = Input.PhoneNumber;
+        user.Bio = Input.Bio;
+
+        await userManager.UpdateAsync(user);
+
+        await signInManager.RefreshSignInAsync(user);
+
+    }
+
+    private async Task OnValidAddressSubmitAsync()
+    {
+        if (user.Address == null)
+        {
+            user.Address = new AddressEntity
+                {
+                    PrimaryAddress = Input.PrimaryAdress,
+                    SecondaryAddress = Input.SecondaryAddress,
+                    PostalCode = Input.Postal,
+                    City = Input.City
+                };
+                
+        }
+        else
+        {
+            user.Address.PrimaryAddress = Input.PrimaryAdress;
+            user.Address.SecondaryAddress = Input.SecondaryAddress;
+            user.Address.PostalCode = Input.Postal;
+            user.Address.City = Input.City;
+        }
+
+
+        await userManager.UpdateAsync(user);
+
+        await signInManager.RefreshSignInAsync(user);
+
+    }
+
+    private sealed class InputModel
+    {
+
+
+
+        [Display(Name = "First Name")]
+        public string? FirstName { get; set; }
+        [Display(Name = "Last Name")]
+        public string? LastName { get; set; }
+        [Display(Name = "Email")]
+        public string? Email { get; set; }
+        [Display(Name = "Phone number")]
+        public string? PhoneNumber { get; set; }
+        [Display(Name = "Biography")]
+        public string? Bio { get; set; }
+        [Display(Name = "Primary address")]
+        public string? PrimaryAdress { get; set; }
+        [Display(Name = "Secondary address")]
+        public string? SecondaryAddress { get; set; }
+        [Display(Name = "Postal coode")]
+        public string? Postal { get; set; }
+        [Display(Name = "City")]
+        public string? City { get; set; }
+    }
+
+     /*private async Task SignOut()
+    {
+        navigationManager.NavigateTo("/logout");
+    }*/
+
+}

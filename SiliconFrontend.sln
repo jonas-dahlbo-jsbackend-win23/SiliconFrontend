@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35222.181
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SiliconFrontend", "SiliconFrontend\SiliconFrontend\SiliconFrontend.csproj", "{C98BE07B-470B-44DF-8BCC-37832101BE10}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SiliconFrontend.Client", "SiliconFrontend\SiliconFrontend.Client\SiliconFrontend.Client.csproj", "{45AD8814-0464-4A19-9642-9EC5F7A16EFF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C98BE07B-470B-44DF-8BCC-37832101BE10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C98BE07B-470B-44DF-8BCC-37832101BE10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C98BE07B-470B-44DF-8BCC-37832101BE10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C98BE07B-470B-44DF-8BCC-37832101BE10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45AD8814-0464-4A19-9642-9EC5F7A16EFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45AD8814-0464-4A19-9642-9EC5F7A16EFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45AD8814-0464-4A19-9642-9EC5F7A16EFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45AD8814-0464-4A19-9642-9EC5F7A16EFF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {415E7B1C-F99B-4FBB-9AD0-BC2F9DD4350A}
+	EndGlobalSection
+EndGlobal

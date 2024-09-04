@@ -1,0 +1,42 @@
+.integrate-tools {
+    .container {
+        .section-title {
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 40px;
+            @include text-lg;
+            color: $gray-600;
+            
+            h1 {
+                color: $gray-900;
+            }
+
+            @include lg {
+                margin-left: 250px;
+                margin-right: 250px;
+
+                h1 {
+                    margin-bottom: 10px;
+                }
+            }
+        }
+
+        .tool-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            justify-content: center;
+            text-align: center;
+            gap: 70px;
+            color: $gray-700;
+
+            img {
+                margin-bottom: 20px;
+            }
+
+            @include lg {
+                text-align: start;
+                grid-template-columns: 1fr 1fr 1fr 1fr;
+            }
+        }
+    }
+}

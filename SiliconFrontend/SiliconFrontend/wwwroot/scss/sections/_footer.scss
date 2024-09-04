@@ -1,0 +1,16 @@
+﻿footer {
+    display: block;
+    text-align: center;
+    padding: 60px 0 20px 0;
+    color: $gray-600;
+
+    .container {
+        
+        .social-images{
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+    }
+}
